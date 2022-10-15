@@ -16,8 +16,6 @@ use App\Http\Controllers\ProductController;
 
 Route::get('/', [ProductController::class, 'index'])->name('product.index');
 
-
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
