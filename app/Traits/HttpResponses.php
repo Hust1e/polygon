@@ -3,15 +3,15 @@
 namespace App\Traits;
 
 trait HttpResponses {
-    protected function succsess($data, $message=null, $code=200) 
+    protected function succsess($data, $message=null, $code=200)
     {
         return response()->json([
-            'status' => 'Succsess',
+            'status' => 'Success',
             'data' => $data,
             'message' => $message,
         ], $code);
     }
-    protected function fail($data, $message=null, $code) 
+    protected function fail($data, $message=null, $code)
     {
         return response()->json([
             'status' => 'Fail',
