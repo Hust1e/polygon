@@ -1,1 +1,4 @@
-{{echo '$product->name'}}
+
+@foreach($product as $prod)
+    {{$prod->name}}
+@endforeach
