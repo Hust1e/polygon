@@ -19,3 +19,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
+Route::post('/authors', [\App\Http\Controllers\API\AuthorsController::class, 'create']);
+Route::post('/books', [\App\Http\Controllers\API\BooksController::class, 'create']);
