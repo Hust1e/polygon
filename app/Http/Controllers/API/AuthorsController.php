@@ -4,9 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateAuthorRequest;
-use App\Http\Resources\AuthorResource;
 use App\Models\Author;
-use App\Models\Book;
 use App\Traits\HttpResponses;
 
 class AuthorsController extends Controller
@@ -16,6 +14,10 @@ class AuthorsController extends Controller
     public function create(CreateAuthorRequest $request)
     {
         $request->validated($request->all());
+        $user = Author::where('author_name', $request->author_name)->first();
+        if(!is_null($user)) {
+            return  $this->fail('', 'This author exist', '404');
+        }
         $author = Author::create([
             'author_name' => $request->author_name,
         ]);
