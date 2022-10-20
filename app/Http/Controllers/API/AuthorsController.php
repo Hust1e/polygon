@@ -41,4 +41,14 @@ class AuthorsController extends Controller
         $author->update($request->all());
         return $this->success($author);
     }
+    public function destroy(Request $request)
+    {
+        $author = Author::find($request->id);
+        if(is_null($author))
+        {
+            return $this->fail('', 'This book doesnt exist', '404');
+        }
+        $author->delete();
+        return $this->success('', '', '204');
+    }
 }

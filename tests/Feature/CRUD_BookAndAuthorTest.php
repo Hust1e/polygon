@@ -77,4 +77,59 @@ class CRUD_BookAndAuthorTest extends TestCase
             ]);
         $response->assertStatus(422);
     }
+    public function test_delete_current_author()
+    {
+        $author = Author::factory()->create();
+        $response = $this->delete('/api/authors/' . $author->id);
+
+        $response->assertStatus(204);
+    }
+    public function test_delete_current_author_with_invalid_data()
+    {
+        $response = $this->delete('/api/authors/0');
+
+        $response->assertStatus(404);
+    }
+    public function test_delete_current_book()
+    {
+        $book = Book::factory()->create();
+        $response = $this->delete('/api/books/' . $book->id);
+
+        $response->assertStatus(204);
+    }
+    public function test_delete_current_book_with_invalid_data()
+    {
+        $response = $this->delete('/api/books/0');
+
+        $response->assertStatus(404);
+    }
+    public function test_cascade_deleting_books()
+    {
+        $author = Author::factory()->create();
+        $book = Book::create([
+            'name' => 'Titan',
+            'year_release' => '1999',
+            'author_id' => $author->id,
+        ]);
+        $response = $this->delete('/api/authors/' . $author->id);
+        $deletedbook = Book::find($book->id);
+        if(is_null($deletedbook)) {
+            $response->assertStatus(204);
+        }
+    }
+    public function test_delete_many_books()
+    {
+        $book1 = Book::factory()->create();
+        $book2 = Book::factory()->create();
+        $response = $this->post('/api/books/delete-many/' . $book1->id . ',' . $book2->id );
+        $deletedbook1 = Book::find($book1->id);
+        if(is_null($deletedbook1))
+        {
+            $deletedbook2 = Book::find($book2->id);
+            if(is_null($deletedbook2))
+            {
+                $response->assertStatus(204);
+            }
+        }
+    }
 }

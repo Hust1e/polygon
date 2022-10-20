@@ -45,4 +45,33 @@ class BooksController extends Controller
         $book->update($request->all());
         return $this->success($book);
     }
+    public function destroy(Request $request)
+    {
+        $book = Book::find($request->id);
+        if(is_null($book))
+        {
+            return $this->fail('', 'This book doesnt exist', '404');
+        }
+        $book->delete();
+        return $this->success('', '', '204');
+    }
+    public function delete_many(Request $request)
+    {
+        $ids = explode(',', $request->id);
+        foreach ($ids as $id)
+        {
+            if($this->book_is_exist($id)){
+                Book::find($id)->delete();
+            }
+        }
+        return $this->success('', '', '204');
+    }
+    public function book_is_exist($id)
+    {
+        $book = Book::find($id);
+        if(is_null($book)){
+            return false;
+        }
+        return true;
+    }
 }
