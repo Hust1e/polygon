@@ -117,4 +117,19 @@ class CRUD_BookAndAuthorTest extends TestCase
             $response->assertStatus(204);
         }
     }
+    public function test_delete_many_books()
+    {
+        $book1 = Book::factory()->create();
+        $book2 = Book::factory()->create();
+        $response = $this->post('/api/books/delete-many/' . $book1->id . ',' . $book2->id );
+        $deletedbook1 = Book::find($book1->id);
+        if(is_null($deletedbook1))
+        {
+            $deletedbook2 = Book::find($book2->id);
+            if(is_null($deletedbook2))
+            {
+                $response->assertStatus(204);
+            }
+        }
+    }
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateAuthorRequest;
 use App\Models\Author;
-use App\Models\Book;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 

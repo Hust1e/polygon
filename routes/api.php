@@ -28,3 +28,4 @@ Route::put('/authors/{id}', [\App\Http\Controllers\API\AuthorsController::class,
 
 Route::delete('/books/{id}', [\App\Http\Controllers\API\BooksController::class, 'destroy']);
 Route::delete('/authors/{id}', [\App\Http\Controllers\API\AuthorsController::class, 'destroy']);
+Route::post('/books/delete-many/{id}', [\App\Http\Controllers\API\BooksController::class, 'delete_many']);
