@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateAuthorRequest;
 use App\Models\Author;
+use App\Models\Book;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 
@@ -40,5 +41,15 @@ class AuthorsController extends Controller
         }
         $author->update($request->all());
         return $this->success($author);
+    }
+    public function destroy(Request $request)
+    {
+        $author = Author::find($request->id);
+        if(is_null($author))
+        {
+            return $this->fail('', 'This book doesnt exist', '404');
+        }
+        $author->delete();
+        return $this->success('', '', '204');
     }
 }

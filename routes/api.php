@@ -25,3 +25,6 @@ Route::get('/books/{id}', [\App\Http\Controllers\API\BooksController::class, 'sh
 Route::put('/books/{id}', [\App\Http\Controllers\API\BooksController::class, 'update']);
 Route::get('/authors/{id}', [\App\Http\Controllers\API\AuthorsController::class, 'show']);
 Route::put('/authors/{id}', [\App\Http\Controllers\API\AuthorsController::class, 'update']);
+
+Route::delete('/books/{id}', [\App\Http\Controllers\API\BooksController::class, 'destroy']);
+Route::delete('/authors/{id}', [\App\Http\Controllers\API\AuthorsController::class, 'destroy']);
