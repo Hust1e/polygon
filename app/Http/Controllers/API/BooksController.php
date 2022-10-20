@@ -7,6 +7,7 @@ use App\Http\Requests\CreateBookRequest;
 use App\Models\Author;
 use App\Models\Book;
 use App\Traits\HttpResponses;
+use Illuminate\Http\Request;
 
 class BooksController extends Controller
 {
@@ -26,5 +27,22 @@ class BooksController extends Controller
             'author_id' => $request->author_id
         ]);
         return  $this->success($book, '', 201);
+    }
+    public function show(Request $request)
+    {
+        $book = Book::find($request->id);
+        if(is_null($book)) {
+            return $this->fail('', 'Not exist', 404);
+        }
+        return $this->success($book);
+    }
+    public function update(CreateBookRequest $request)
+    {
+        $book = Book::find($request->id);
+        if(is_null($book)) {
+            return $this->fail('', 'Not exist', 404);
+        }
+        $book->update($request->all());
+        return $this->success($book);
     }
 }

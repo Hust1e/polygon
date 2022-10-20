@@ -26,7 +26,7 @@ class CreateBookRequest extends FormRequest
         return [
             'name' => ['required', 'min:4'],
             'year_release' => ['required', 'integer'],
-             'author_id' => ['required', 'integer'],
+            'author_id' => ['required', 'integer'],
         ];
     }
 }

@@ -20,7 +20,7 @@ class BookFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->word(10),
             'year_release' => $this->faker->numberBetween(1700, 2022),
             'author_id' => Author::all()->random()->id
         ];
