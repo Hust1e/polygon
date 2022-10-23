@@ -19,25 +19,43 @@ class AuthController extends Controller
         $request->validated($request->all());
         $credentials = $request->only('email', 'password');
         if(!Auth::attempt($credentials)) {
-            return $this->fail('', 'Credentials do not match', 401);
+            return $this->fail('', 'Unauthorized Access', 401);
         }
         $user = User::where('email', $request->email)->first();
+        if($user->is_admin == 1){
+            return  $this->success([
+                'user' => $user,
+                'token' => $user->createToken("$user->name", ['admin'])->plainTextToken
+            ]);
+        }
         return  $this->success([
             'user' => $user,
-            'token' => $user->createToken('API token for ' . $user->name)->plainTextToken
+            'token' => $user->createToken('API token for ', ['user'])->plainTextToken
         ]);
     }
     public function register(StoreUserRequest $request)
     {
         $request->validated($request->all());
+
+        if(is_null($request->is_admin)){
+            $request->is_admin = 0;
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => HASH::make($request->password),
+            'is_admin' => $request->is_admin,
         ]);
+        if($user->is_admin == 1){
+            return $this->success([
+                'user' => $user,
+                'token' => $user->createToken('token', ['admin'])->plainTextToken,
+            ]);
+        }
         return $this->success([
             'user' => $user,
-            'token' => $user->createToken('You personal Token')->plainTextToken,
+            'token' => $user->createToken('token', [''])->plainTextToken,
         ]);
     }
     public function logout()
