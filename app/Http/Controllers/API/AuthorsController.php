@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateAuthorRequest;
 use App\Models\Author;
 use App\Traits\HttpResponses;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use function MongoDB\BSON\toJSON;
 
 class AuthorsController extends Controller
 {
@@ -30,7 +33,18 @@ class AuthorsController extends Controller
         if(is_null($author)) {
             return $this->fail('', 'Not exist', 404);
         }
-        return $this->success($author);
+
+        $books = DB::table('authors')->
+        join('books', 'books.author_id', '=', "authors.id")->
+        where('authors.id', '=', "$author->id")->get();
+
+        dd($books);
+        $data = [
+            'author' => $author,
+            'count' => $count,
+            'books' => $books,
+        ];
+        return $this->success($data);
     }
     public function update(CreateAuthorRequest $request)
     {
