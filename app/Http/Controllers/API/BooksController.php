@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateBookRequest;
+use App\Http\Resources\AuthorResource;
 use App\Models\Author;
 use App\Models\Book;
 use App\Traits\HttpResponses;
@@ -13,6 +14,18 @@ class BooksController extends Controller
 {
     use HttpResponses;
 
+    public function index()
+    {
+        $books = Book::all();
+        $arr = [];
+        foreach ($books as $book) {
+            $arr[] = [
+                'author' => $book->author()->first()->author_name,
+                'book' => $book,
+            ];
+        }
+        return new AuthorResource($arr);
+    }
     public function create(CreateBookRequest $request)
     {
         $request->validated($request->all());
