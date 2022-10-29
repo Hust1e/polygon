@@ -9,13 +9,15 @@ use App\Http\Controllers\API\AuthController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+Route::get('/temperature', [\App\Http\Controllers\API\TemperatureController::class, 'index']);
 // Protected routes
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::resource('/tasks', TasksController::class);
 
+    Route::get('/authors', [\App\Http\Controllers\API\AuthorsController::class, 'index']);
+    Route::get('/books', [\App\Http\Controllers\API\BooksController::class, 'index']);
     Route::get('/books/{id}', [\App\Http\Controllers\API\BooksController::class, 'show']);
     Route::get('/authors/{id}', [\App\Http\Controllers\API\AuthorsController::class, 'show']);
 });

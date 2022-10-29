@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Author;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use App\Http\Controllers\Controller;

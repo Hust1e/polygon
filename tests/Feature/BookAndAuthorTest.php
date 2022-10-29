@@ -14,6 +14,7 @@ class BookAndAuthorTest extends TestCase
     public function test_create_author()
     {
         $user = User::factory()->create();
+
         $token = $user->createToken("$user->name", ['admin'])->plainTextToken;
         $response = $this->withHeader('Authorization', 'Bearer ' . $token)->postJson('/api/authors', ['author_name' => 'MartinIden']);
         $response->assertStatus(201);
@@ -51,5 +52,9 @@ class BookAndAuthorTest extends TestCase
             'author_id' => $author->id,
         ]);
         $response->assertStatus(422);
+    }
+    public function test_get_correctly_count_of_books()
+    {
+
     }
 }

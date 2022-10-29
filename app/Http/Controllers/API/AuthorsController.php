@@ -4,16 +4,32 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateAuthorRequest;
+use App\Http\Resources\AuthorResource;
 use App\Models\Author;
 use App\Traits\HttpResponses;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use function MongoDB\BSON\toJSON;
 
 class AuthorsController extends Controller
 {
     use HttpResponses;
+
+    public function index()
+    {
+        
+        $authors = Author::all();
+        $arr = [];
+        foreach ($authors as $author)
+        {
+            $count = $author->books()->count();
+            $arr[] = [
+                'author' => $author->author_name,
+                'count' => $count
+            ];
+        }
+        return new AuthorResource($arr);
+
+    }
 
     public function create(CreateAuthorRequest $request)
     {
@@ -34,15 +50,12 @@ class AuthorsController extends Controller
             return $this->fail('', 'Not exist', 404);
         }
 
-        $books = DB::table('authors')->
+        $countBooks = DB::table('authors')->
         join('books', 'books.author_id', '=', "authors.id")->
-        where('authors.id', '=', "$author->id")->get();
-
-        dd($books);
+        where('authors.id', '=', "$author->id")->count();
         $data = [
             'author' => $author,
-            'count' => $count,
-            'books' => $books,
+            'count of books' => $countBooks,
         ];
         return $this->success($data);
     }
